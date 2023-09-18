@@ -68,10 +68,6 @@ final class BillInputView: UIView {
         return textField
     }()
     
-    @objc private func doneButtonTapped() {
-        textField.endEditing(true)
-    }
-    
     init() {
         super.init(frame: .zero)
         setLayout()
@@ -82,14 +78,25 @@ final class BillInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func observe() {
+    func reset() {
+        textField.text = nil
+        billSubject.send(0)
+    }
+}
+
+private extension BillInputView {
+    @objc func doneButtonTapped() {
+        textField.endEditing(true)
+    }
+    
+    func observe() {
         textField.textPublisher.sink { [weak self] text in
             guard let self = self else { return }
             billSubject.send(text?.doubleValue ?? 0)
         }.store(in: &cancellables)
     }
     
-    private func setLayout() {
+    func setLayout() {
         [textField, currencyDenominationLabel].forEach {
             textFieldContainerView.addSubview($0)
         }
@@ -97,7 +104,7 @@ final class BillInputView: UIView {
         [headerView, textFieldContainerView].forEach {
             self.addSubview($0)
         }
-                
+        
         headerView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.centerY.equalTo(textFieldContainerView.snp.centerY)

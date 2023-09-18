@@ -33,6 +33,8 @@ final class TipInputView: UIView {
         return button
     }()
     
+    
+    
     private lazy var fifteenPercentTipButton: UIButton = {
         let button = buildTipButton(tip: .fifteenPercent)
         button.tapPublisher.flatMap {
@@ -101,21 +103,8 @@ final class TipInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setLayout() {
-        [headerView, buttonVSackView].forEach {
-            addSubview($0)
-        }
-        
-        headerView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.trailing.equalTo(buttonVSackView.snp.leading).offset(-24)
-            $0.width.equalTo(68)
-            $0.centerY.equalTo(buttonHSackView.snp.centerY)
-        }
-        
-        buttonVSackView.snp.makeConstraints {
-            $0.top.bottom.trailing.equalToSuperview()
-        }
+    func reset() {
+        tipSubject.send(.none)
     }
     
     private func buildTipButton(tip: Tip) -> UIButton {
@@ -161,12 +150,31 @@ final class TipInputView: UIView {
         }
         return controller
     }()
+}
+
+private extension TipInputView {
+    func setLayout() {
+        [headerView, buttonVSackView].forEach {
+            addSubview($0)
+        }
+        
+        headerView.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.trailing.equalTo(buttonVSackView.snp.leading).offset(-24)
+            $0.width.equalTo(68)
+            $0.centerY.equalTo(buttonHSackView.snp.centerY)
+        }
+        
+        buttonVSackView.snp.makeConstraints {
+            $0.top.bottom.trailing.equalToSuperview()
+        }
+    }
     
-    private func handleCustomTipButtton() {
+    func handleCustomTipButtton() {
         parentViewController?.present(alert, animated: true)
     }
     
-    private func observe() {
+    func observe() {
         tipSubject.sink { [weak self] tip in
             guard let self = self else { return }
             resetView()
@@ -193,7 +201,7 @@ final class TipInputView: UIView {
         }.store(in: &cancellables)
     }
     
-    private func resetView() {
+    func resetView() {
         [tenPercentTipButton, fifteenPercentTipButton, twentyPercentTipButton, customTipButton].forEach {
             $0.backgroundColor = ThemeColor.primary
         }

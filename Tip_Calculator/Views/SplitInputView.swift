@@ -85,14 +85,20 @@ final class SplitInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func observe() {
+    func reset() {
+        splitSubject.send(1)
+    }
+}
+
+private extension SplitInputView {
+    func observe() {
         splitSubject.sink { [weak self] quantity in
             guard let self = self else { return }
             quantityLabel.text = quantity.stringValue
         }.store(in: &cancellables)
     }
     
-    private func setLayout() {
+    func setLayout() {
         [headerView, stackView].forEach {
             addSubview($0)
         }

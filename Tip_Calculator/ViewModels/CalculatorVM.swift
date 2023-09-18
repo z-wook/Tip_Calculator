@@ -9,14 +9,23 @@ import Foundation
 import Combine
 
 final class CalculatorVM {
+    private var cancellables = Set<AnyCancellable>()
+    private let audioPlayerService: AudioPlayerService
+    
+    init(audioPlayerService: AudioPlayerService = DefaultAudioPlayer()) {
+        self.audioPlayerService = audioPlayerService
+    }
+    
     struct Input {
         let billPublisher: AnyPublisher<Double, Never>
         let tipPublisher: AnyPublisher<Tip, Never>
         let splitPublisher: AnyPublisher<Int, Never>
+        let logoViewTapPublisher: AnyPublisher<Void, Never>
     }
     
     struct Output {
         let updateViewPublisher: AnyPublisher<Result, Never>
+        let restCalculatorPublisher: AnyPublisher<Void, Never>
     }
     
     func transform(input: Input) -> Output {
@@ -33,7 +42,17 @@ final class CalculatorVM {
                     totalTip: totalTip)
                 return Just(result)
             }.eraseToAnyPublisher()
-        return Output(updateViewPublisher: updateViewPublisher)
+        
+        let resultCalculatorPublisher = input.logoViewTapPublisher
+            .handleEvents (receiveOutput: { [weak self] _ in
+                guard let self = self else { return }
+                audioPlayerService.playSound()
+            }).flatMap {
+                return Just($0)
+            }.eraseToAnyPublisher()
+        
+        return Output(updateViewPublisher: updateViewPublisher,
+                      restCalculatorPublisher: resultCalculatorPublisher)
     }
     
     private func getTipAmount(bill: Double, tip: Tip) -> Double {
