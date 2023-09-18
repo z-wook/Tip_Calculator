@@ -8,7 +8,6 @@
 import UIKit
 
 final class AmountView: UIView {
-    
     private let title: String
     private let textAlignment: NSTextAlignment
     
@@ -53,6 +52,16 @@ final class AmountView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(amount: Double) {
+        let text = NSMutableAttributedString(
+            string: amount.currencyFormatted,
+            attributes: [.font: ThemeFont.bold(size: 24)])
+        text.addAttributes(
+            [.font: ThemeFont.bold(size: 16)],
+            range: NSMakeRange(0, 1))
+        amountLabel.attributedText = text
     }
     
     private func setLayout() {
