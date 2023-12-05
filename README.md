@@ -50,7 +50,7 @@
 
 ## ⚡️ 라이브러리 사용 이유
 1. ***CombineCocoa*** <br>
-    `Reactive Programming`을 작성하기 위해 사용
+    `Reactive Programming`을 구현하기 위해 사용
    
 2. ***SnapKit*** <br>
     `Auto Layout`을 쉽게 설정하기 위해 사용
