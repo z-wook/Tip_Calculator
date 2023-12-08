@@ -13,9 +13,13 @@
 <br>
 
 ## 📺 UI 미리보기
-<img src="https://github.com/z-wook/Tip_Calculator/assets/101041221/e3e8be24-0ea4-4447-8be3-0a5ea319aed6" width="300" /></a>
-<img src="https://github.com/z-wook/Tip_Calculator/assets/101041221/6087fd0a-b881-43fa-ad8e-21e385346395" width="300" /></a>
+<details>
+    <summary>자세히</summary>
 
+https://github.com/z-wook/Tip_Calculator/assets/101041221/e3e8be24-0ea4-4447-8be3-0a5ea319aed6
+
+https://github.com/z-wook/Tip_Calculator/assets/101041221/6087fd0a-b881-43fa-ad8e-21e385346395
+</details>
 <br>
 
 ## 📚 구현 기능
@@ -43,7 +47,6 @@
 <div align="left">
 
 ## 🏛️ 사용한 라이브러리
-
 1. [CombineCocoa](https://github.com/CombineCommunity/CombineCocoa)
 2. [SnapKit](https://github.com/SnapKit/SnapKit)
 <br>
